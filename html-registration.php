@@ -7,9 +7,9 @@
     <title>Document</title>
 </head>
 <body>
-    <?php include 'index.php';?>
-    <iframe src="./NavigationBar.html" frameborder="0"></iframe> 
+    <?php include 'registration.php';?>
+    <?php include 'NavigationBar.php';?>
 
-    
+
 </body>
 </html>

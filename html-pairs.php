@@ -8,8 +8,7 @@
 </head>
 <body>
     <?php include 'pairs.php';?>
-
-    <iframe src="./NavigationBar.html" frameborder="0"></iframe> 
+    <?php include 'NavigationBar.php';?>
 
     
 </body>
