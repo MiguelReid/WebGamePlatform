@@ -7,9 +7,9 @@
     <title>Document</title>
 </head>
 <body>
-    <?php include 'pairs.php';?>
+    <?php include '../php/leaderboard.php';?>
     <?php include 'NavigationBar.php';?>
 
-    
+
 </body>
 </html>

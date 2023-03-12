@@ -6,14 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        <?php include 'NavigationBar.css'; ?>
+        <?php include '../css/NavigationBar.css'; ?>
     </style>
 </head>
 
 <body>
     <div id="wrapper">
         <div class="topnav" id="first">
-            <a href="html-index.php" id="home">Home</a>
+            <a href="html/html-index.php" id="home">Home</a>
             <img src="" class="img-fluid" id="image">
         </div>
         <div id="second">
