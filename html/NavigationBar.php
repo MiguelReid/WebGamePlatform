@@ -13,8 +13,9 @@
 <body>
     <div id="wrapper">
         <div class="topnav" id="first">
-            <a href="html/html-index.php" id="home">Home</a>
+            <a href="../html/html-index.php" id="home">Home</a>
             <img src="" class="img-fluid" id="image">
+            <!-- This is the avatar -->
         </div>
         <div id="second">
             <a href="html-pairs.php" id="memory">Memory</a>

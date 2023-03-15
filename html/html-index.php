@@ -11,6 +11,11 @@
 <body>
     <?php include 'NavigationBar.php';?>
     <?php include '../php/index.php';?>
+    <h1>Welcome to pairs</h1>
+    <form action="html-pairs.php">
+        <input type="submit" value="Click here to play" />
+    </form>
+
     <div id="main">
 
     </div>

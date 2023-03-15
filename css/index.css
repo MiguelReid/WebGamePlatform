@@ -1,14 +1,18 @@
 #main{
     background-image: url('../resources/arcade.jpg');
-    opacity: 0.6;
+    opacity: 0.5;
     position: absolute;
     top:31px;right: 0; bottom: 0; left: 0;
     overflow: hidden;
     background-size: cover;
     background-repeat: no-repeat;
-    overflow: hidden;
-
+    pointer-events: none;
 }
+
+h1 {text-align: center;}
+
+form {text-align: center;}
+
 
 body{
     margin: 0px;
