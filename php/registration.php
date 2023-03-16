@@ -1,17 +1,3 @@
-<?php
-
-$name = $_GET['username'];
-
-if (preg_match('/[”!@#%&*()+=^{}—;:“’<>?]/', $name))
-{
-    echo "There are special characters";
-}else{
-    echo "There are not special characters";
-}
-
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,7 +7,24 @@ if (preg_match('/[”!@#%&*()+=^{}—;:“’<>?]/', $name))
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-<body>    
+<body>  
+
+<?php
+
+$name = $_GET['username'];
+
+if (preg_match('/[”!@#%&*()+=^{}—;:“’<>?]/', $name))
+{
+    header('Location: ../html/html-registration.php');
+
+}else{
+    echo "There are not special characters";
+}
+
+
+?>
+
+  
 
 </body>
 

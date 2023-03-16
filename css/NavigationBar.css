@@ -1,11 +1,10 @@
-div {
-    background-color: #219ebc;
-}
+
 
 #wrapper{
     overflow: hidden;
     height:31px;
     display: flex;
+    background-color: #219ebc;
 }
 
 #fist{
