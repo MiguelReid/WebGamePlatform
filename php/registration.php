@@ -20,8 +20,6 @@ if (preg_match('/[”!@#%&*()+=^{}—;:“’<>?]/', $name))
 }else{
     echo "There are not special characters";
 }
-
-
 ?>
 
   
