@@ -21,11 +21,41 @@
         <br><br>
 
         <label for="avatarSelector">Select avatar type:</label>
-        <select name="avatarSelector" id="avatarSelector" onchange="showDiv('images', this)" multiple>
+        <select name="avatarSelector" id="avatarSelector" onchange="showDiv('images', this)">
             <option value="simple">simple</option>
             <option value="medium">medium</option>
             <option value="complex">complex</option>
-        </select><br><br>
+        </select><br>
+
+        <div id="complexOptions">
+            <label for="eyesSelector" id="label">Select eyes type:</label>
+            <select name="eyesSelector" id="eyesSelector" onchange="changeFace('eyes', this)">
+                <option value="closed">closed</option>
+                <option value="laughing">laughing</option>
+                <option value="long">long</option>
+                <option value="normal">normal</option>
+                <option value="rolling">rolling</option>
+                <option value="winking">winking</option>
+            </select><br>
+
+            <label for="mouthSelector" id="label">Select mouth type:</label>
+            <select name="mouthSelector" id="mouthSelector" onchange="changeFace('mouth', this)">
+                <option value="open">open</option>
+                <option value="sad">sad</option>
+                <option value="smiling">smiling</option>
+                <option value="straight">straight</option>
+                <option value="surprise">surprise</option>
+                <option value="teeth">teeth</option>
+            </select><br>
+
+            <label for="skinSelector" id="label">Select skin type:</label>
+            <select name="skinSelector" id="skinSelector" onchange="changeFace('skin', this)">
+                <option value="green">green</option>
+                <option value="red">red</option>
+                <option value="yellow">yellow</option>
+            </select>
+        </div>
+        <br>
         <input type="submit" value="Submit" name="submit">
     </form>
 
@@ -37,8 +67,19 @@
     </div>
 
     <script>
+        function changeFace(bodyPart, option) {
+            var img = document.getElementById(bodyPart);
+            img.src = "../resources/" + bodyPart + "/" + option.value + ".png";
+        }
+
         function showDiv(divId, element) {
-            document.getElementById(divId).style.display = element.value == "complex" ? 'block' : 'none';
+            document.getElementById(divId).style.display = element.value == "complex" || element.value == "medium" ? 'block' : 'none';
+            var options = document.getElementById("complexOptions");
+            if (element.value == "complex") {
+                options.style.visibility = "visible";
+            } else {
+                options.style.visibility = "hidden";
+            }
         }
 
         function submitForm() {
@@ -50,7 +91,7 @@
                 error.textContent = "Please enter a valid username";
                 error.style.color = "red";
                 return false;
-            }else{
+            } else {
                 return true;
             }
         }

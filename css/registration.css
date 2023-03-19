@@ -20,7 +20,7 @@ form{
 #mouth{
     position: absolute;
     z-index: 2; 
-    left:10px;    
+    left:15px;   
 }
 
 #images{
@@ -32,3 +32,14 @@ form{
     -webkit-transform: scale(0.6, 0.6);
     display: none;
 }
+
+select{
+    writing-mode: horizontal-tb !important;
+    display: inline-block;
+}
+
+#complexOptions{
+    visibility: hidden;
+}
+
+
