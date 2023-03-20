@@ -1,17 +1,16 @@
-#main{
-    background-image: url("../resources/arcade.jpg");
-    opacity: 0.5;
-    position: absolute;
-    top:31px;right: 0; bottom: 0; left: 0;
-    overflow: hidden;
-    background-size: cover;
-    background-repeat: no-repeat;
-    pointer-events: none;
+html{
+    background: url("../resources/arcade.jpg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 h1 {text-align: center;}
 
 form {text-align: center;}
+
+p {text-align: center;}
 
 
 body{

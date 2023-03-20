@@ -15,6 +15,8 @@
     <form action="html-pairs.php">
         <input type="submit" value="Click here to play" />
     </form>
+    <br>
+    <p><a href="html-registration.php">You're not using a registered session? Register now!</a></p>
 
     <div id="main">
 
