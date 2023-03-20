@@ -7,22 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-<body>  
+<body>
 
-<?php
+    <?php
 
-$name = $_GET['username'];
+    $name = $_POST['username'];
 
-if (preg_match('/[”!@#%&*()+=^{}—;:“’<>?]/', $name))
-{
-    header('Location: ../html/html-registration.php');
+    if (preg_match('/[”!@#%&*()+=^{}—;:“’<>?]/', $name)) {
+        // Do not accept the session
+    } else {
+        setcookie("username", $name, 0, "/");
+        echo ("User Registered!");
+        header('Location: ../html/html-index.php');
+    }
+    ?>
 
-}else{
-    echo "There are not special characters";
-}
-?>
 
-  
 
 </body>
 

@@ -14,7 +14,7 @@
 
     <?php include 'NavigationBar.php'; ?>
 
-    <form action="" method="post" onsubmit="return submitForm()">
+    <form action="../php/registration.php" method="post" onsubmit="return submitForm()">
         <label for="username">Username: </label>
         <input type="text" id="username" name="username">
         <span id="error"></span>

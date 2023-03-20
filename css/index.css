@@ -1,20 +1,34 @@
-html{
-    background: url("../resources/arcade.jpg") no-repeat center center fixed; 
+html {
+  background: url("../resources/arcade.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
 }
 
-h1 {text-align: center;}
+h1 {
+  text-align: center;
+}
 
-form {text-align: center;}
+form {
+  text-align: center;
+  
+}
 
-p {text-align: center;}
+p {
+  text-align: center;
+}
 
+#registerLink {
+  visibility: hidden;
+}
 
-body{
-    margin: 0px;
-    height: 100%;
-    overflow: hidden;
+#play {
+  visibility: hidden;
+}
+
+body {
+  margin: 0px;
+  height: 100%;
+  /* So topnavbar looks good */
 }
