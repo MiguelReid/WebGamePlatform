@@ -53,11 +53,13 @@
                 play.style.visibility = "hidden";
                 document.getElementById("register").style.visibility = "visible";
                 document.getElementById("leaderboard").style.visibility = "hidden";
+                document.getElementById("navBarImage").style.visibility = "hidden";
             } else {
                 play.style.visibility = "visible";
                 register.style.visibility = "hidden";
                 document.getElementById("register").style.visibility = "hidden";
                 document.getElementById("leaderboard").style.visibility = "visible";
+                document.getElementById("navBarImage").style.visibility = "visible";
             }
         }
     </script>

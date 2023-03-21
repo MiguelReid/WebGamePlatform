@@ -27,8 +27,3 @@ p {
   visibility: hidden;
 }
 
-body {
-  margin: 0px;
-  height: 100%;
-  /* So topnavbar looks good */
-}

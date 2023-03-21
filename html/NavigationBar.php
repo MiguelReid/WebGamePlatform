@@ -12,15 +12,21 @@
 
 <body>
     <div id="wrapper">
-        <div class="topnav" id="first">
+        <div id="first">
             <a href="../html/html-index.php" id="home">Home</a>
-            <img src="" class="img-fluid" id="image">
-            <!-- This is the avatar -->
         </div>
         <div id="second">
-            <a href="html-pairs.php" id="memory">Memory</a>
-            <a href="html-leaderboard.php" id="leaderboard">Leaderboard</a>
-            <a href="html-registration.php" id="register">Register</a>
+            <div id="navBarImages">
+                <img src="../resources/eyes/closed.png" id="navBareyes" />
+                <img src="../resources/mouth/open.png" id="navBarmouth" />
+                <img src="../resources/skin/green.png" id="navBarskin" />
+                <!-- Mirar como cambiar el cntenido si ya estamos registrados -->
+            </div>
+            <div id="navBarElements">
+                <a href="html-pairs.php" id="memory">Memory</a>
+                <a href="html-leaderboard.php" id="leaderboard">Leaderboard</a>
+                <a href="html-registration.php" id="register">Register</a>
+            </div>
         </div>
     </div>
 </body>

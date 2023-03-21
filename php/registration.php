@@ -17,7 +17,7 @@
         // Do not accept the session
     } else {
         setcookie("username", $name, 0, "/");
-        echo ("User Registered!");
+        //echo ("User Registered!");
         header('Location: ../html/html-index.php');
     }
     ?>

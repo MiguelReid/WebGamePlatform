@@ -69,7 +69,9 @@
     <script>
         function changeFace(bodyPart, option) {
             var img = document.getElementById(bodyPart);
-            img.src = "../resources/" + bodyPart + "/" + option.value + ".png";
+            var source = "../resources/" + bodyPart + "/" + option.value + ".png";
+            img.src = source;
+            document.getElementById('navBar'+bodyPart).src = source;
         }
 
         function showDiv(divId, element) {
