@@ -71,7 +71,7 @@
             var img = document.getElementById(bodyPart);
             var source = "../resources/" + bodyPart + "/" + option.value + ".png";
             img.src = source;
-            document.getElementById('navBar'+bodyPart).src = source;
+            document.getElementById('navBar' + bodyPart).src = source;
         }
 
         function showDiv(divId, element) {

@@ -15,6 +15,7 @@
     $eyes = $_POST['eyesSelector'];
     $mouth = $_POST['mouthSelector'];
     $skin = $_POST['skinSelector'];
+    $difficulty = $_POST['avatarSelector'];
 
     if (preg_match('/[”!@#%&*()+=^{}—;:“’<>?]/', $name)) {
         // Do not accept the session
@@ -23,6 +24,7 @@
         setcookie("eyes", $eyes, 0, "/");
         setcookie("mouth", $mouth, 0, "/");
         setcookie("skin", $skin, 0, "/");
+        setcookie("difficulty", $difficulty, 0, "/");
         header('Location: ../html/html-index.php');
     }
     ?>
