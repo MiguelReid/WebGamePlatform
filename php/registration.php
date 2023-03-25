@@ -12,12 +12,17 @@
     <?php
 
     $name = $_POST['username'];
+    $eyes = $_POST['eyesSelector'];
+    $mouth = $_POST['mouthSelector'];
+    $skin = $_POST['skinSelector'];
 
     if (preg_match('/[”!@#%&*()+=^{}—;:“’<>?]/', $name)) {
         // Do not accept the session
     } else {
         setcookie("username", $name, 0, "/");
-        //echo ("User Registered!");
+        setcookie("eyes", $eyes, 0, "/");
+        setcookie("mouth", $mouth, 0, "/");
+        setcookie("skin", $skin, 0, "/");
         header('Location: ../html/html-index.php');
     }
     ?>

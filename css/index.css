@@ -15,12 +15,9 @@ form {
   
 }
 
-p {
-  text-align: center;
-}
-
 #registerLink {
   visibility: hidden;
+  text-align: center !important;
 }
 
 #play {

@@ -21,7 +21,9 @@
     </form>
     <br>
 
-    <p id="registerLink"><a href="html-registration.php">You're not using a registered session? Register now!</a></p>
+    <div id="registerLink">
+        <a href="html-registration.php">You're not using a registered session? Register now!</a>
+    </div>
 
     <script>
         function getCookie(name) {
@@ -44,8 +46,11 @@
 
         window.onload = function checkCookies() {
             var myCookie = getCookie("username");
+            var getEyes = getCookie("eyes");
+            var getMouth = getCookie("mouth");
+            var getSkin = getCookie("skin");
+
             var register = document.getElementById("registerLink");
-            console.log(register);
             var play = document.getElementById("play");
 
             if (myCookie == null) {
@@ -53,13 +58,17 @@
                 play.style.visibility = "hidden";
                 document.getElementById("register").style.visibility = "visible";
                 document.getElementById("leaderboard").style.visibility = "hidden";
-                document.getElementById("navBarImage").style.visibility = "hidden";
+                document.getElementById("navBarImages").style.visibility = "hidden";
             } else {
                 play.style.visibility = "visible";
                 register.style.visibility = "hidden";
                 document.getElementById("register").style.visibility = "hidden";
                 document.getElementById("leaderboard").style.visibility = "visible";
-                document.getElementById("navBarImage").style.visibility = "visible";
+                document.getElementById("navBarImages").style.visibility = "visible";
+
+                document.getElementById("navBareyes").src = "../resources/eyes/" + getEyes + ".png";
+                document.getElementById("navBarmouth").src = "../resources/mouth/" + getMouth + ".png";
+                document.getElementById("navBarskin").src = "../resources/skin/" + getSkin + ".png";
             }
         }
     </script>

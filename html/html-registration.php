@@ -28,7 +28,7 @@
         </select><br>
 
         <div id="complexOptions">
-            <label for="eyesSelector" id="label">Select eyes type:</label>
+            <label for="eyesSelector">Select eyes type:</label>
             <select name="eyesSelector" id="eyesSelector" onchange="changeFace('eyes', this)">
                 <option value="closed">closed</option>
                 <option value="laughing">laughing</option>
@@ -38,7 +38,7 @@
                 <option value="winking">winking</option>
             </select><br>
 
-            <label for="mouthSelector" id="label">Select mouth type:</label>
+            <label for="mouthSelector">Select mouth type:</label>
             <select name="mouthSelector" id="mouthSelector" onchange="changeFace('mouth', this)">
                 <option value="open">open</option>
                 <option value="sad">sad</option>
@@ -48,7 +48,7 @@
                 <option value="teeth">teeth</option>
             </select><br>
 
-            <label for="skinSelector" id="label">Select skin type:</label>
+            <label for="skinSelector">Select skin type:</label>
             <select name="skinSelector" id="skinSelector" onchange="changeFace('skin', this)">
                 <option value="green">green</option>
                 <option value="red">red</option>
