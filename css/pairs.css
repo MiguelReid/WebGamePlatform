@@ -17,18 +17,19 @@
 }
 
 .card{
-  background-color: #5295cf;
-  max-width: 50px;
-  max-height: 40px;
+  background-color: #0d680e;
+  width: 90px;
+  height: 110px;
   place-items: center;
+  cursor: pointer;
 }
 
 #board{
   display: inline-grid;
   grid-template-columns: repeat(5, 40px);
-  grid-gap: 20px;
+  grid-gap: 70px;
   margin:auto;
-  margin-top: 220px;
+  margin-top: 180px;
 }
 
 #playButton{

@@ -100,25 +100,34 @@
             var mouthS = shuffle(mouth).slice(0, cards);
             var skinS = shuffle(skin).slice(0, cards);
 
+            // Look at how to make this neater
             if (cards == 3) {
                 values.board.style.gridTemplateColumns = 'repeat(3, 40px)';
+            } else if (cards == 5) {
+                values.board.style.gridTemplateColumns = 'repeat(5, 40px)';
             }
-
 
             for (var i = 0; i < cards * 2; i++) {
-                var img = document.createElement('img');
+                var img = document.createElement('div');
                 img.className = 'card';
                 img.id = 'img' + i;
-                img.src = '../resources/mouth/sad.png'
+
+                img.style.backgroundImage = "url('../resources/exeter.png')";
+                img.style.backgroundPosition = "center";
+                img.style.backgroundSize = "cover";
+                img.addEventListener("click", rotateImage);
+
                 values.board.appendChild(img);
-
             }
-
             playGame();
         }
 
         function playGame() {
 
+        }
+
+        function rotateImage() {
+            //console.log('Funciona!');
         }
 
     </script>
