@@ -97,8 +97,12 @@
             var mouth = ['open', 'sad', 'smiling', 'straight', 'surprise', 'teeth'];
             var skin = ['green', 'red', 'yellow'];
             var eyesS = shuffle(eyes).slice(0, cards);
+            eyesS = eyesS.concat(eyesS);
             var mouthS = shuffle(mouth).slice(0, cards);
-            var skinS = shuffle(skin).slice(0, cards);
+            mouthS = mouthS.concat(mouthS);
+            var skinS = shuffle(skin);
+            skinS = skinS.concat(skinS);
+            // S = shuffled
 
             // Look at how to make this neater
             if (cards == 3) {
@@ -106,6 +110,9 @@
             } else if (cards == 5) {
                 values.board.style.gridTemplateColumns = 'repeat(5, 40px)';
             }
+
+            var children = []
+            const prefixUrl = "../resources/";
 
             for (var i = 0; i < cards * 2; i++) {
                 var img = document.createElement('div');
@@ -115,19 +122,36 @@
                 img.style.backgroundImage = "url('../resources/exeter.png')";
                 img.style.backgroundPosition = "center";
                 img.style.backgroundSize = "cover";
-                img.addEventListener("click", rotateImage);
 
-                values.board.appendChild(img);
+                img.style.eyes = prefixUrl + "eyes/" + eyesS[i] + ".png";
+                img.style.mouth = prefixUrl + "mouth/" + mouthS[i] + ".png";
+                img.style.skin = prefixUrl + "skin/" + skinS[Math.floor(i / 2)] + ".png";
+
+                children.push(img);
+                img.onclick = function () { rotateImage(this.id) };
             }
+
+            shuffle(children);
+
+            for (const child of children) {
+                values.board.appendChild(child);
+            }
+
             playGame();
         }
 
-        function playGame() {
+        function rotateImage(id) {
+            var image = document.getElementById(id);
+            image.style.backgroundImage = "";
 
+            console.log(image.style.eyes);
+            console.log(image.style.mouth);
+            console.log(image.style.skin);
         }
 
-        function rotateImage() {
-            //console.log('Funciona!');
+
+        function playGame() {
+
         }
 
     </script>

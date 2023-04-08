@@ -22,6 +22,9 @@
   height: 110px;
   place-items: center;
   cursor: pointer;
+  --mouth: "";
+  --eyes: "";
+  --skin: "";
 }
 
 #board{
