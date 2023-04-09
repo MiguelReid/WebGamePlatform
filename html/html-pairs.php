@@ -123,12 +123,12 @@
                 img.style.backgroundPosition = "center";
                 img.style.backgroundSize = "cover";
 
-                img.style.eyes = prefixUrl + "eyes/" + eyesS[i] + ".png";
-                img.style.mouth = prefixUrl + "mouth/" + mouthS[i] + ".png";
+                img.style.eyes = prefixUrl + "eyes/" + eyesS[Math.floor(i / 2)] + ".png";
+                img.style.mouth = prefixUrl + "mouth/" + mouthS[Math.floor(i / 2)] + ".png";
                 img.style.skin = prefixUrl + "skin/" + skinS[Math.floor(i / 2)] + ".png";
-
+                //console.log(eyesS[i]);
                 children.push(img);
-                img.onclick = function () { rotateImage(this.id) };
+                img.onclick = function () { rotateImage(this) };
             }
 
             shuffle(children);
@@ -140,10 +140,8 @@
             playGame();
         }
 
-        function rotateImage(id) {
-            var image = document.getElementById(id);
+        function rotateImage(image) {
             image.style.backgroundImage = "";
-
             console.log(image.style.eyes);
             console.log(image.style.mouth);
             console.log(image.style.skin);
