@@ -22,9 +22,33 @@
   height: 110px;
   place-items: center;
   cursor: pointer;
-  --mouth: "";
-  --eyes: "";
-  --skin: "";
+  overflow: hidden;
+  position: relative;
+  object-fit: contain;
+
+}
+
+.card > * {
+  max-width: 60px;
+  max-height: 60px;
+  right: 15px;
+  top: 23px;
+  visibility: hidden;
+}
+
+.cardSkin {
+  position: absolute;
+  z-index: 1;
+}
+
+.cardEyes {
+  position: absolute;
+  z-index: 3;
+}
+
+.cardMouth {
+  position: absolute;
+  z-index: 3;
 }
 
 #board{

@@ -126,7 +126,25 @@
                 img.style.eyes = prefixUrl + "eyes/" + eyesS[Math.floor(i / 2)] + ".png";
                 img.style.mouth = prefixUrl + "mouth/" + mouthS[Math.floor(i / 2)] + ".png";
                 img.style.skin = prefixUrl + "skin/" + skinS[Math.floor(i / 2)] + ".png";
-                //console.log(eyesS[i]);
+
+                var cardEyes = document.createElement("img");
+                cardEyes.className = 'cardEyes';
+                cardEyes.id = 'eye' + i;
+                var cardMouth = document.createElement("img");
+                cardMouth.className = 'cardMouth';
+                cardMouth.id = 'mouth' + i;
+                var cardSkin = document.createElement("img");
+                cardSkin.className = 'cardSkin';
+                cardSkin.id = 'skin' + i;
+
+                cardEyes.src = prefixUrl + "eyes/" + eyesS[Math.floor(i / 2)] + ".png";
+                cardMouth.src = prefixUrl + "mouth/" + mouthS[Math.floor(i / 2)] + ".png";
+                cardSkin.src = prefixUrl + "skin/" + skinS[Math.floor(i / 2)] + ".png";
+
+                img.appendChild(cardMouth);
+                img.appendChild(cardEyes);
+                img.appendChild(cardSkin);
+
                 children.push(img);
                 img.onclick = function () { rotateImage(this) };
             }
@@ -140,13 +158,36 @@
             playGame();
         }
 
-        function rotateImage(image) {
-            image.style.backgroundImage = "";
-            console.log(image.style.eyes);
-            console.log(image.style.mouth);
-            console.log(image.style.skin);
+        var rotateCounter = 0;
+        var visibleNodes = [];
+
+        async function rotateImage(image) {
+            var nodes = image.childNodes;
+            for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].nodeName.toLowerCase() == 'img') {
+                    nodes[i].style.visibility = "visible";
+                    visibleNodes.push(nodes[i]);
+                    rotateCounter++;
+                }
+            }
+
+            if (rotateCounter == 6) {
+                for (var i = 0; i < visibleNodes.length; i++) {
+                    const result = await timeStop();
+                    visibleNodes[i].style.visibility = "hidden";
+                }
+                visibleNodes = [];
+                rotateCounter = 0;
+            }
         }
 
+        function timeStop() {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve('resolved');
+                }, 80);
+            });
+        }
 
         function playGame() {
 

@@ -20,7 +20,6 @@
                 <img src="../resources/eyes/closed.png" id="navBareyes" />
                 <img src="../resources/mouth/open.png" id="navBarmouth" />
                 <img src="../resources/skin/green.png" id="navBarskin" />
-                <!-- Mirar como cambiar el cntenido si ya estamos registrados -->
             </div>
             <div id="navBarElements">
                 <a href="html-pairs.php" id="memory">Memory</a>
