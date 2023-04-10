@@ -19,6 +19,7 @@
             <button id="playButton" onclick=gameDifficulty()>Start the game</button>
         </div>
         <div id="board"></div>
+        <div id="win"></div>
     </div>
     </br>
     <div id="stats">
@@ -35,12 +36,13 @@
             moves: document.getElementById('moves'),
             timer: document.getElementById('timer'),
             play: document.getElementById('playButton'),
+            win: document.getElementById('win')
         }
 
         const state = {
             gameStarted: false,
-            flippedCards: 0,
             totalFlips: 0,
+            flippedCards: 0,
             totalTime: 0,
             loop: null
         }
@@ -104,12 +106,7 @@
             skinS = skinS.concat(skinS);
             // S = shuffled
 
-            // Look at how to make this neater
-            if (cards == 3) {
-                values.board.style.gridTemplateColumns = 'repeat(3, 40px)';
-            } else if (cards == 5) {
-                values.board.style.gridTemplateColumns = 'repeat(5, 40px)';
-            }
+            values.board.style.gridTemplateColumns = `repeat(${cards}, 40px)`;
 
             var children = []
             const prefixUrl = "../resources/";
@@ -123,9 +120,9 @@
                 img.style.backgroundPosition = "center";
                 img.style.backgroundSize = "cover";
 
-                img.style.eyes = prefixUrl + "eyes/" + eyesS[Math.floor(i / 2)] + ".png";
-                img.style.mouth = prefixUrl + "mouth/" + mouthS[Math.floor(i / 2)] + ".png";
-                img.style.skin = prefixUrl + "skin/" + skinS[Math.floor(i / 2)] + ".png";
+                var thisEyes = "eyes/" + eyesS[Math.floor(i / 2)] + ".png";
+
+                img.style.eyes = prefixUrl + thisEyes;
 
                 var cardEyes = document.createElement("img");
                 cardEyes.className = 'cardEyes';
@@ -137,7 +134,7 @@
                 cardSkin.className = 'cardSkin';
                 cardSkin.id = 'skin' + i;
 
-                cardEyes.src = prefixUrl + "eyes/" + eyesS[Math.floor(i / 2)] + ".png";
+                cardEyes.src = prefixUrl + thisEyes;
                 cardMouth.src = prefixUrl + "mouth/" + mouthS[Math.floor(i / 2)] + ".png";
                 cardSkin.src = prefixUrl + "skin/" + skinS[Math.floor(i / 2)] + ".png";
 
@@ -155,13 +152,15 @@
                 values.board.appendChild(child);
             }
 
-            playGame();
+            playGame(cards);
         }
 
         var rotateCounter = 0;
         var visibleNodes = [];
+        var flippedCard = [];
 
         async function rotateImage(image) {
+            state.totalFlips++;
             var nodes = image.childNodes;
             for (var i = 0; i < nodes.length; i++) {
                 if (nodes[i].nodeName.toLowerCase() == 'img') {
@@ -171,12 +170,25 @@
                 }
             }
 
+            flippedCard.push(image);
+
             if (rotateCounter == 6) {
-                for (var i = 0; i < visibleNodes.length; i++) {
-                    const result = await timeStop();
-                    visibleNodes[i].style.visibility = "hidden";
+                if (flippedCard[0].style.eyes == flippedCard[1].style.eyes) {
+                    state.flippedCards += 2;
+                    flippedCard[0].style.cursor = "default";
+                    flippedCard[1].style.cursor = "default";
+                    flippedCard[0].onclick =  '';
+                    flippedCard[1].onclick = '';
+
+                } else {
+                    const wait = await timeStop();
+                    for (var i = 0; i < visibleNodes.length; i++) {
+                        visibleNodes[i].style.visibility = "hidden";
+                    }
                 }
+
                 visibleNodes = [];
+                flippedCard = [];
                 rotateCounter = 0;
             }
         }
@@ -185,12 +197,29 @@
             return new Promise(resolve => {
                 setTimeout(() => {
                     resolve('resolved');
-                }, 80);
+                }, 1000);
             });
         }
 
-        function playGame() {
+        function playGame(cards) {
+            state.gameStarted = true
 
+            state.loop = setInterval(() => {
+                state.totalTime++
+                values.moves.innerText = `${state.totalFlips} moves`
+                values.timer.innerText = `time: ${state.totalTime} sec`
+
+                if (state.flippedCards == cards * 2) {
+                    var points = 100 - state.totalFlips - state.totalTime;
+                    values.win.innerHTML = `
+                            <span class="win-text">
+                                You won!<br />
+                                    with <span class="highlight">${points}</span> points
+                            </span> 
+                            `
+                    clearInterval(state.loop)
+                }
+            }, 1000)
         }
 
     </script>
