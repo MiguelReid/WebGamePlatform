@@ -8,6 +8,9 @@
     <style>
         <?php include '../css/pairs.css'; ?>
     </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -16,7 +19,9 @@
 
     <div id="background">
         <div class="controls">
-            <button id="playButton" onclick=gameDifficulty()>Start the game</button>
+            <button id="playButton" onclick="gameDifficulty()">Start the game</button>
+            <button id="startAgain" onclick="reload()">Play Again</button>
+            <button id="submit" onclick="highscore()">Submit</button>
         </div>
         <div id="board"></div>
         <div id="win"></div>
@@ -27,9 +32,11 @@
         <div id="timer">time: 0 sec</div>
     </div>
 
-
-
     <script>
+
+        function reload() {
+            location.reload();
+        }
 
         const values = {
             board: document.getElementById('board'),
@@ -83,18 +90,45 @@
             var difficulty = getCookie("difficulty");
             switch (difficulty) {
                 case "simple":
-                    initializeGame(3, false);
+                    initializeGame(3, false, 0, 6);
                     break;
                 case "medium":
-                    initializeGame(5, false);
+                    initializeGame(5, false, 0, 6);
                     break;
                 case "complex":
-                    initializeGame(5, true);
+                    complexGame();
                     break;
             }
         }
 
-        function initializeGame(cards, flag) {
+        function nonClickeable(counter) {
+            for (let i = 0; i < counter / 3; i++) {
+                flippedCard[i].style.cursor = 'default';
+                flippedCard[i].onclick = '';
+            }
+        }
+
+        function complexGame() {
+            initializeGame(5, true, 0, 6);
+            // Normal
+            //initializeGame(5, true, 5, 9);
+            //initializeGame(5, true, 5, 9);
+            // 15 cartas de parejas de 3
+            //initializeGame(5, true, 10, 12);
+            //initializeGame(5, true, 10, 12);
+            // 20 cartas de parejas de 4
+            // Enseñar intentos y puntos de cada nivel
+            // Cambiar board a dorado si se supera max level de fichero (leer JSON antes y comparar con max puntos)
+        }
+
+
+
+        var rotateCounter = 0;
+        var visibleNodes = [];
+        var flippedCard = [];
+        var eyesToCheck = [];
+
+        function initializeGame(cards, complex, extraCards, flipCounter) {
             var eyes = ['closed', 'laughing', 'long', 'normal', 'rolling', 'winking'];
             var mouth = ['open', 'sad', 'smiling', 'straight', 'surprise', 'teeth'];
             var skin = ['green', 'red', 'yellow'];
@@ -111,18 +145,10 @@
             var children = []
             const prefixUrl = "../resources/";
 
-            for (var i = 0; i < cards * 2; i++) {
+            for (let i = 0; i < cards * 2 + extraCards; i++) {
                 var img = document.createElement('div');
                 img.className = 'card';
                 img.id = 'img' + i;
-
-                img.style.backgroundImage = "url('../resources/exeter.png')";
-                img.style.backgroundPosition = "center";
-                img.style.backgroundSize = "cover";
-
-                var thisEyes = "eyes/" + eyesS[Math.floor(i / 2)] + ".png";
-
-                img.style.eyes = prefixUrl + thisEyes;
 
                 var cardEyes = document.createElement("img");
                 cardEyes.className = 'cardEyes';
@@ -134,16 +160,20 @@
                 cardSkin.className = 'cardSkin';
                 cardSkin.id = 'skin' + i;
 
+                var thisEyes = "eyes/" + eyesS[Math.floor(i / (flipCounter / 3))] + ".png";
+                // FlipCounter/3 so it relates with the number of pairs
+                img.style.eyes = prefixUrl + thisEyes;
+
                 cardEyes.src = prefixUrl + thisEyes;
-                cardMouth.src = prefixUrl + "mouth/" + mouthS[Math.floor(i / 2)] + ".png";
-                cardSkin.src = prefixUrl + "skin/" + skinS[Math.floor(i / 2)] + ".png";
+                cardMouth.src = prefixUrl + "mouth/" + mouthS[Math.floor(i / (flipCounter / 3))] + ".png";
+                cardSkin.src = prefixUrl + "skin/" + skinS[Math.floor(i / (flipCounter / 3))] + ".png";
 
                 img.appendChild(cardMouth);
                 img.appendChild(cardEyes);
                 img.appendChild(cardSkin);
 
                 children.push(img);
-                img.onclick = function () { rotateImage(this) };
+                img.onclick = function () { rotateImage(this, flipCounter) };
             }
 
             shuffle(children);
@@ -152,17 +182,13 @@
                 values.board.appendChild(child);
             }
 
-            playGame(cards);
+            playGame((cards * 2) + extraCards, complex);
         }
 
-        var rotateCounter = 0;
-        var visibleNodes = [];
-        var flippedCard = [];
-
-        async function rotateImage(image) {
+        async function rotateImage(image, flipCounter) {
             state.totalFlips++;
             var nodes = image.childNodes;
-            for (var i = 0; i < nodes.length; i++) {
+            for (let i = 0; i < nodes.length; i++) {
                 if (nodes[i].nodeName.toLowerCase() == 'img') {
                     nodes[i].style.visibility = "visible";
                     visibleNodes.push(nodes[i]);
@@ -171,58 +197,151 @@
             }
 
             flippedCard.push(image);
+            eyesToCheck.push(image.style.eyes);
 
-            if (rotateCounter == 6) {
-                if (flippedCard[0].style.eyes == flippedCard[1].style.eyes) {
-                    state.flippedCards += 2;
-                    flippedCard[0].style.cursor = "default";
-                    flippedCard[1].style.cursor = "default";
-                    flippedCard[0].onclick =  '';
-                    flippedCard[1].onclick = '';
+            if (rotateCounter == flipCounter) {
+                if (eyesToCheck.every((val, i, eyesToCheck) => val === eyesToCheck[0])) {
+                    console.log("Same Cards");
+                    state.flippedCards += (flipCounter / 3);
+                    nonClickeable(flipCounter);
 
                 } else {
-                    const wait = await timeStop();
-                    for (var i = 0; i < visibleNodes.length; i++) {
+                    const wait = await timeStop(1000);
+                    for (let i = 0; i < visibleNodes.length; i++) {
                         visibleNodes[i].style.visibility = "hidden";
                     }
                 }
 
                 visibleNodes = [];
                 flippedCard = [];
+                eyesToCheck = [];
                 rotateCounter = 0;
             }
         }
 
-        function timeStop() {
+        function timeStop(time) {
             return new Promise(resolve => {
                 setTimeout(() => {
                     resolve('resolved');
-                }, 1000);
+                }, time);
             });
         }
 
-        function playGame(cards) {
+        function playGame(cards, complex) {
             state.gameStarted = true
+            var tries = 0;
+
+            if (complex == true) {
+                tries = 70;
+            } else {
+                tries = 30;
+            }
 
             state.loop = setInterval(() => {
                 state.totalTime++
                 values.moves.innerText = `${state.totalFlips} moves`
                 values.timer.innerText = `time: ${state.totalTime} sec`
 
-                if (state.flippedCards == cards * 2) {
+                if (state.flippedCards == cards) {
                     var points = 100 - state.totalFlips - state.totalTime;
-                    values.win.innerHTML = `
-                            <span class="win-text">
-                                You won!<br />
-                                    with <span class="highlight">${points}</span> points
-                            </span> 
-                            `
-                    clearInterval(state.loop)
+                    setEnding('Won!', points);
+                }
+
+                if (state.totalFlips == tries) {
+                    setEnding('Lost :(', 0);
                 }
             }, 1000)
         }
 
+        async function setEnding(message, points) {
+            /*
+            values.win.innerHTML = `
+                            <span class="win-text">
+                                You ${message}<br />
+                                    with <span class="highlight">${points}</span> points
+                            </span> 
+                            `
+            */
+            clearInterval(state.loop);
+            /*
+            setTimeout(function () {
+                values.win.innerHTML = '';
+            }, 5000);
+
+            const wait = await timeStop(5000);
+            */
+            if (getCookie("username") != null) {
+                endingOptions();
+            }
+        }
+
+        function endingOptions() {
+            document.getElementById('board').style.display = "none";
+            document.getElementById('submit').style.display = "inline-block";
+            document.getElementById('startAgain').style.display = "inline-block";
+        }
+
+        //------------------------------------------------------------------------------
+
+        //------------------------------------------------------------------------------
+
+        var httpRequest;
+        function scoreAlert() {
+            if (httpRequest.readyState == 4) {
+                if (httpRequest.status == 200) {
+                    var restxt = httpRequest.responseText;
+                    console.log(restxt);
+                }
+            }
+        }
+
+        function updateScore() {
+            var postdata = `action=updatescores&points=${100 - state.totalFlips - state.totalTime}`;
+            httpRequest = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP");
+            httpRequest.onreadystatechange = scoreAlert;
+            httpRequest.open("POST", '../php/pairs.php', true);
+            httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            httpRequest.send(postdata);
+        }
+
+        function readScore() {
+            var postdata = 'action=retrievescores';
+            httpRequest = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP");
+            httpRequest.onreadystatechange = scoreAlert;
+            httpRequest.open('POST', '../php/pairs.php', true);
+            httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            httpRequest.send(postdata);
+        }
+
+        function highscore() {
+            var postdata = 'action=highscore';
+            httpRequest = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP");
+            httpRequest.onreadystatechange = scoreAlert;
+            httpRequest.open('POST', '../php/pairs.php', true);
+            httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            httpRequest.send(postdata);
+        }
+
+        function leaderboardNames() {
+            var postdata = 'action=leaderboardNames';
+            httpRequest = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP");
+            httpRequest.onreadystatechange = scoreAlert;
+            httpRequest.open('POST', '../php/pairs.php', true);
+            httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            httpRequest.send(postdata);
+        }
+
+        function leaderboardScores() {
+            var postdata = 'action=leaderboardScores';
+            httpRequest = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP");
+            httpRequest.onreadystatechange = scoreAlert;
+            httpRequest.open('POST', '../php/pairs.php', true);
+            httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            httpRequest.send(postdata);
+        }
+
     </script>
+
 
 </body>
 
