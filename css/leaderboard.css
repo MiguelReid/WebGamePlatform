@@ -1,0 +1,12 @@
+table{
+    border: 1px solid rgb(28, 92, 52);
+    width: 50%;
+    text-align: center;
+    align-items: center;
+    left: 50%;
+    column-span: 2;
+}
+
+table, th, td{
+    border: 1px solid rgb(28, 92, 52);
+}
