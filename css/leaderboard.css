@@ -10,10 +10,14 @@ table {
 }
 
 tr {
-    background-color: #3888be;
+    background-color: #4141c6;
     color: #ffffff;
     text-align: center;
     border-bottom: 1px solid #dddddd;
+}
+
+th{
+    background-color: #79aad3;
 }
 
 th,td {
@@ -21,7 +25,7 @@ th,td {
 }
 
 tr:nth-of-type(even) {
-    background-color: #274196;
+    background-color: #79A7D3;
 }
 
 
