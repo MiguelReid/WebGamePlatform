@@ -14,6 +14,10 @@
     <?php include '../php/leaderboard.php'; ?>
     <?php include 'NavigationBar.php'; ?>
 
+    <div id="background">
+
+    </div>
+
     <script>
 
         function createTable(data) {
@@ -33,12 +37,13 @@
             if (data.length != 0) {
                 for (var i = 0; i < names.length; i++) {
                     var row = document.createElement('tr');
+
                     var cellName = document.createElement('td');
                     cellName.innerHTML = names[i];
-                    //cellName.appendChild(names[i]);
+
                     var cellScore = document.createElement('td');
                     cellScore.innerHTML = score[i];
-                    //cellScore.appendChild(score[i]);
+
                     row.appendChild(cellName);
                     row.appendChild(cellScore);
 
@@ -47,7 +52,7 @@
             }
 
             table.appendChild(tableBody);
-            document.body.appendChild(table);
+            document.getElementById('background').appendChild(table);
         }
 
         var httpRequest;
@@ -60,7 +65,47 @@
             }
         }
 
-        function leaderboardScores() {
+        function getCookie(name) {
+            var dc = document.cookie;
+            var prefix = name + "=";
+            var begin = dc.indexOf("; " + prefix);
+            if (begin == -1) {
+                begin = dc.indexOf(prefix);
+                if (begin != 0) return null;
+            }
+            else {
+                begin += 2;
+                var end = document.cookie.indexOf(";", begin);
+                if (end == -1) {
+                    end = dc.length;
+                }
+            }
+            return decodeURI(dc.substring(begin + prefix.length, end));
+        }
+
+        function checkCookies() {
+            var myCookie = getCookie("username");
+            var getEyes = getCookie("eyes");
+            var getMouth = getCookie("mouth");
+            var getSkin = getCookie("skin");
+
+            if (myCookie == null) {
+                document.getElementById("register").style.visibility = "visible";
+                document.getElementById("leaderboard").style.visibility = "hidden";
+                document.getElementById("navBarImages").style.visibility = "hidden";
+            } else {
+                document.getElementById("register").style.visibility = "hidden";
+                document.getElementById("leaderboard").style.visibility = "visible";
+                document.getElementById("navBarImages").style.visibility = "visible";
+
+                document.getElementById("navBareyes").src = "../resources/eyes/" + getEyes + ".png";
+                document.getElementById("navBarmouth").src = "../resources/mouth/" + getMouth + ".png";
+                document.getElementById("navBarskin").src = "../resources/skin/" + getSkin + ".png";
+            }
+        }
+
+        window.onload = function leaderboardScores() {
+            checkCookies();
             var postdata = 'action=leaderboardScores';
             httpRequest = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP");
             httpRequest.onreadystatechange = scoreAlert;
@@ -68,8 +113,6 @@
             httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             httpRequest.send(postdata);
         }
-
-        window.onload = leaderboardScores();
 
     </script>
 

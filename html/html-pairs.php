@@ -21,7 +21,7 @@
         <div class="controls">
             <button id="playButton" onclick="gameDifficulty()">Start the game</button>
             <button id="startAgain" onclick="reload()">Play Again</button>
-            <button id="submit" onclick="highscore()">Submit</button>
+            <button id="submit" onclick="updateScore()">Submit</button>
         </div>
         <div id="board"></div>
         <div id="win"></div>
@@ -34,8 +34,12 @@
 
     <script>
 
+        var currentHighscore = 0;
+        var userFound = 0;
+
         function reload() {
             location.reload();
+            console.log(state.gameStarted);
         }
 
         const values = {
@@ -51,7 +55,8 @@
             totalFlips: 0,
             flippedCards: 0,
             totalTime: 0,
-            loop: null
+            loop: null,
+            currentPoints: 100
         }
 
         function getCookie(name) {
@@ -109,12 +114,9 @@
         }
 
         function complexGame() {
-            initializeGame(5, true, 0, 6);
-            // Normal
-            //initializeGame(5, true, 5, 9);
+            initializeGame(5, true, 5, 9);
             //initializeGame(5, true, 5, 9);
             // 15 cartas de parejas de 3
-            //initializeGame(5, true, 10, 12);
             //initializeGame(5, true, 10, 12);
             // 20 cartas de parejas de 4
             // Enseñar intentos y puntos de cada nivel
@@ -187,6 +189,7 @@
 
         async function rotateImage(image, flipCounter) {
             state.totalFlips++;
+            state.currentPoints--;
             var nodes = image.childNodes;
             for (let i = 0; i < nodes.length; i++) {
                 if (nodes[i].nodeName.toLowerCase() == 'img') {
@@ -203,6 +206,7 @@
                 if (eyesToCheck.every((val, i, eyesToCheck) => val === eyesToCheck[0])) {
                     console.log("Same Cards");
                     state.flippedCards += (flipCounter / 3);
+                    state.currentPoints++;
                     nonClickeable(flipCounter);
 
                 } else {
@@ -227,7 +231,28 @@
             });
         }
 
+        function highscoreAlert() {
+            if (httpRequestHighscore.readyState == 4) {
+                if (httpRequestHighscore.status == 200) {
+                    currentHighscore = httpRequestHighscore.responseText;
+                    console.log("Highscore -> " + currentHighscore);
+                }
+            }
+        }
+
+        function highscore() {
+            var postdata = 'action=highscore';
+            httpRequestHighscore = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP");
+            httpRequestHighscore.onreadystatechange = highscoreAlert;
+            httpRequestHighscore.open('POST', '../php/pairs.php', true);
+            httpRequestHighscore.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            httpRequestHighscore.send(postdata);
+        }
+
         function playGame(cards, complex) {
+            var flag = false;
+            highscore();
+            findUser();
             state.gameStarted = true
             var tries = 0;
 
@@ -242,8 +267,18 @@
                 values.moves.innerText = `${state.totalFlips} moves`
                 values.timer.innerText = `time: ${state.totalTime} sec`
 
+                if (state.currentPoints > currentHighscore && flag == false) {
+                    //! NOT WORKING
+                    flag = true;
+                    console.log("helo");
+                    document.getElementById('background').style.backgroundColor = 'golden';
+                    setTimeout(function () {
+                        document.getElementById('background').style.backgroundColor = 'grey';
+                    }, 1000)
+                }
+
                 if (state.flippedCards == cards) {
-                    var points = 100 - state.totalFlips - state.totalTime;
+                    var points = 100 - state.totalFlips - state.totalTime + state.flippedCards;
                     setEnding('Won!', points);
                 }
 
@@ -282,7 +317,7 @@
         }
 
         //------------------------------------------------------------------------------
-
+        // Post 
         //------------------------------------------------------------------------------
 
         var httpRequest;
@@ -296,28 +331,41 @@
         }
 
         function updateScore() {
-            var postdata = `action=updatescores&points=${100 - state.totalFlips - state.totalTime}`;
-            httpRequest = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP");
-            httpRequest.onreadystatechange = scoreAlert;
-            httpRequest.open("POST", '../php/pairs.php', true);
-            httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            httpRequest.send(postdata);
+            if (userFound != 1) {
+                console.log(userFound);
+                var postdata = `action=updatescores&points=${100 - state.totalFlips - state.totalTime + state.flippedCards}`;
+                httpRequest = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP");
+                httpRequest.open("POST", '../php/pairs.php', false);
+                httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                httpRequest.send(postdata);
+            } else {
+                changeScore();
+            }
         }
 
-        function readScore() {
-            var postdata = 'action=retrievescores';
-            httpRequest = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP");
-            httpRequest.onreadystatechange = scoreAlert;
-            httpRequest.open('POST', '../php/pairs.php', true);
-            httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            httpRequest.send(postdata);
+        var httpRequestUser;
+        function findUserAlert() {
+            if (httpRequestUser.readyState == 4) {
+                if (httpRequestUser.status == 200) {
+                    userFound = httpRequestUser.responseText;
+                    //console.log(userFound);
+                }
+            }
         }
 
-        function highscore() {
-            var postdata = 'action=highscore';
+        function findUser() {
+            var postdata = `action=findUser`;
+            httpRequestUser = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP");
+            httpRequestUser.onreadystatechange = findUserAlert;
+            httpRequestUser.open("POST", '../php/pairs.php', true);
+            httpRequestUser.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            httpRequestUser.send(postdata);
+        }
+
+        function changeScore() {
+            var postdata = `action=changeScore&points=${100 - state.totalFlips - state.totalTime + state.flippedCards}`;
             httpRequest = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP");
-            httpRequest.onreadystatechange = scoreAlert;
-            httpRequest.open('POST', '../php/pairs.php', true);
+            httpRequest.open('POST', '../php/pairs.php', false);
             httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             httpRequest.send(postdata);
         }

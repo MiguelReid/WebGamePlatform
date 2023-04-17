@@ -28,5 +28,48 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function getCookie(name) {
+            var dc = document.cookie;
+            var prefix = name + "=";
+            var begin = dc.indexOf("; " + prefix);
+            if (begin == -1) {
+                begin = dc.indexOf(prefix);
+                if (begin != 0) return null;
+            }
+            else {
+                begin += 2;
+                var end = document.cookie.indexOf(";", begin);
+                if (end == -1) {
+                    end = dc.length;
+                }
+            }
+            return decodeURI(dc.substring(begin + prefix.length, end));
+        }
+
+        window.onload = function checkCookiesNavBar() {
+            var myCookie = getCookie("username");
+            var getEyes = getCookie("eyes");
+            var getMouth = getCookie("mouth");
+            var getSkin = getCookie("skin");
+
+            if (myCookie == null) {
+                document.getElementById("register").style.visibility = "visible";
+                document.getElementById("leaderboard").style.visibility = "hidden";
+                document.getElementById("navBarImages").style.visibility = "hidden";
+            } else {
+                document.getElementById("register").style.visibility = "hidden";
+                document.getElementById("leaderboard").style.visibility = "visible";
+                document.getElementById("navBarImages").style.visibility = "visible";
+
+                document.getElementById("navBareyes").src = "../resources/eyes/" + getEyes + ".png";
+                document.getElementById("navBarmouth").src = "../resources/mouth/" + getMouth + ".png";
+                document.getElementById("navBarskin").src = "../resources/skin/" + getSkin + ".png";
+            }
+        }
+    </script>
+
 </body>
+
 </html>

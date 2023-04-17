@@ -24,22 +24,39 @@ if (@$_POST['action'] == 'updatescores') {
     file_put_contents("../leaderboard.json", $testArray);
 }
 
-if (@$_POST['action'] == 'retrievescores') {
+if (@$_POST['action'] == 'changeScore') {
     $json = file_get_contents("../leaderboard.json");
     $jsonData = json_decode($json, true);
 
-    $star = "FUNCIONA";
+    $star = $_POST['points'];
+    $name = $_COOKIE['username'];
     $index = 0;
 
     foreach ($jsonData as $item) {
-        if ($item['username'] == $star) {
-            $jsonData[$index]['username'] = "shakira";
+        if ($item['username'] == $name and $star > $jsonData[$index]['points']) {
+            $jsonData[$index]['points'] = (int)$star;
+            $json_object = json_encode($jsonData, true);
+            file_put_contents('../leaderboard.json', $json_object);
         }
         $index++;
     }
+}
 
-    $json_object = json_encode($jsonData, true);
-    file_put_contents('../leaderboard.json', $json_object);
+if (@$_POST['action'] == 'findUser') {
+    $json = file_get_contents("../leaderboard.json");
+    $jsonData = json_decode($json, true);
+
+    $name = $_COOKIE['username'];
+    $index = 0;
+    $flag = false;
+
+    foreach ($jsonData as $item) {
+        if ($item['username'] == $name) {
+            $flag = true;
+        }
+        $index++;
+    }
+    echo $flag;
 }
 
 if (@$_POST['action'] == 'leaderboardNames') {
@@ -70,7 +87,7 @@ if (@$_POST['action'] == 'leaderboardScores') {
     print_r($scores);
 }
 
-if (@$_POST['action'] == 'highscores') {
+if (@$_POST['action'] == 'highscore') {
     $json = file_get_contents("../leaderboard.json");
     $jsonData = json_decode($json, true);
 

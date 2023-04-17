@@ -46,12 +46,11 @@
 
         window.onload = function checkCookies() {
             var myCookie = getCookie("username");
+            var register = document.getElementById("registerLink");
+            var play = document.getElementById("play");
             var getEyes = getCookie("eyes");
             var getMouth = getCookie("mouth");
             var getSkin = getCookie("skin");
-
-            var register = document.getElementById("registerLink");
-            var play = document.getElementById("play");
 
             if (myCookie == null) {
                 register.style.visibility = "visible";

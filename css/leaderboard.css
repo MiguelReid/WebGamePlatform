@@ -1,12 +1,11 @@
-
-
 table {
     border-collapse: collapse;
-    margin: 25px 0;
+    margin: 25px 50px;
     font-size: 0.9em;
     font-family: sans-serif;
     min-width: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    border-spacing: 2px;
 }
 
 tr {
@@ -17,7 +16,7 @@ tr {
 }
 
 th{
-    background-color: #79aad3;
+    background-color: blue;
 }
 
 th,td {
@@ -28,9 +27,19 @@ tr:nth-of-type(even) {
     background-color: #79A7D3;
 }
 
-
-
-tbody tr.active-row {
-    font-weight: bold;
-    color: #67349a;
-}
+#background {
+    width: 500px;
+    height: 600px;
+    background-color: grey;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 25px;
+    bottom: 0;
+    margin: auto;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: auto;
+    box-shadow: 5px 5px;
+    text-align: center;
+  }
