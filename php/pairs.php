@@ -3,10 +3,17 @@
 if (@$_POST['action'] == 'updatescores') {
 
     $name = $_COOKIE['username'];
+    $lvl1 = $_POST['lvl1'];
+    $lvl2 = $_POST['lvl2'];
+    $lvl3 = $_POST['lvl3'];
     $points = $_POST['points'];
+
 
     $jsonData = '{
         "username":"' . $name . '",
+        "lvl1":' . $lvl1 . ',
+        "lvl2":' . $lvl2 . ',
+        "lvl3":' . $lvl3 . ',
         "points":' . $points . '
     }';
 
@@ -31,10 +38,16 @@ if (@$_POST['action'] == 'changeScore') {
     $star = $_POST['points'];
     $name = $_COOKIE['username'];
     $index = 0;
+    $lvl1 = $_POST['lvl1'];
+    $lvl2 = $_POST['lvl2'];
+    $lvl3 = $_POST['lvl3'];
 
     foreach ($jsonData as $item) {
         if ($item['username'] == $name and $star > $jsonData[$index]['points']) {
-            $jsonData[$index]['points'] = (int)$star;
+            $jsonData[$index]['lvl1'] = (int) $lvl1;
+            $jsonData[$index]['lvl2'] = (int) $lvl2;
+            $jsonData[$index]['lvl3'] = (int) $lvl3;
+            $jsonData[$index]['points'] = (int) $star;
             $json_object = json_encode($jsonData, true);
             file_put_contents('../leaderboard.json', $json_object);
         }
@@ -94,11 +107,13 @@ if (@$_POST['action'] == 'highscore') {
     $index = 0;
     $highscore = 0;
 
-    foreach ($jsonData as $item) {
-        if ($jsonData[$index]['points'] > $highscore) {
-            $highscore = $jsonData[$index]['points'];
+    if (!empty($json)) {
+        foreach ($jsonData as $item) {
+            if ($jsonData[$index]['points'] > $highscore) {
+                $highscore = $jsonData[$index]['points'];
+            }
+            $index++;
         }
-        $index++;
     }
     echo ($highscore);
 }

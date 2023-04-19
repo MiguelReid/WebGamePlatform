@@ -20,6 +20,8 @@
     if (preg_match('/[”!@#%&*()+=^{}—;:“’<>?]/', $name)) {
         // Do not accept the session
     } else {
+        session_start();
+        $_SESSION["user"] = $name;
         setcookie("username", $name, 0, "/");
         setcookie("eyes", $eyes, 0, "/");
         setcookie("mouth", $mouth, 0, "/");

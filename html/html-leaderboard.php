@@ -28,25 +28,50 @@
             var header1 = document.createElement('th');
             header1.innerHTML = 'Username';
             var header2 = document.createElement('th');
-            header2.innerHTML = 'Points';
+            header2.innerHTML = 'Level 1';
+            var header3 = document.createElement('th');
+            header3.innerHTML = 'Level 2';
+            var header4 = document.createElement('th');
+            header4.innerHTML = 'Level 3';
+            var header5 = document.createElement('th');
+            header5.innerHTML = 'Total Points';
+
             tableBody.appendChild(header1);
             tableBody.appendChild(header2);
-            var score = data.filter((v, i) => i % 2);
-            var names = data.filter((v, i) => !(i % 2));
+            tableBody.appendChild(header3);
+            tableBody.appendChild(header4);
+            tableBody.appendChild(header5);
+
+            const arrays = [[], [], [], [], []];
+
+            data.forEach((item, index) => {
+                arrays[index % 5].push(item);
+            });
 
             if (data.length != 0) {
-                for (var i = 0; i < names.length; i++) {
+                for (var i = 0; i < data.length/5; i++) {
                     var row = document.createElement('tr');
 
                     var cellName = document.createElement('td');
-                    cellName.innerHTML = names[i];
+                    cellName.innerHTML = arrays[0][i];
+
+                    var cellFirstLevel = document.createElement('td');
+                    cellFirstLevel.innerHTML = arrays[1][i];
+
+                    var cellSecondLevel = document.createElement('td');
+                    cellSecondLevel.innerHTML = arrays[2][i];
+
+                    var cellThirdLevel = document.createElement('td');
+                    cellThirdLevel.innerHTML = arrays[3][i];
 
                     var cellScore = document.createElement('td');
-                    cellScore.innerHTML = score[i];
+                    cellScore.innerHTML = arrays[4][i];
 
                     row.appendChild(cellName);
+                    row.appendChild(cellFirstLevel);
+                    row.appendChild(cellSecondLevel);
+                    row.appendChild(cellThirdLevel);
                     row.appendChild(cellScore);
-
                     tableBody.appendChild(row);
                 }
             }

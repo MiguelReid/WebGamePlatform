@@ -3,6 +3,23 @@ form{
     padding-left: 5px;
 }
 
+div.avatartable{
+	display:table;
+	font-family:sans-serif;
+}
+div.avatartablerow{
+	display:table-row;
+}
+div.avatartablerow > div{
+	display:table-cell;
+	padding:8px;
+}
+div.avatartable select, div.avatartable input	{
+	min-width:150px;
+	padding:5px;
+	box-sizing: border-box;
+}
+
 #skin{
     position: absolute;
     top: 10px;

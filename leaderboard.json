@@ -1,18 +1,27 @@
 [
     {
-        "username": "juanito",
-        "points": 33
-    },
-    {
-        "username": "bruuum",
-        "points": 50
-    },
-    {
-        "username": "Manueliyo",
-        "points": 17
-    },
-    {
-        "username": "mafmefmifmof",
-        "points": 5
+        "username": "yuuju",
+        "lvl1": 0,
+        "lvl2": 0,
+        "lvl3": 0,
+        "points": 11
     }
-]
+,{
+        "username":"ElMigelin",
+        "lvl1":16,
+        "lvl2":24,
+        "lvl3":29,
+        "points":68
+    },{
+        "username":"papa",
+        "lvl1":0,
+        "lvl2":0,
+        "lvl3":0,
+        "points":139
+    },{
+        "username":"manolin",
+        "lvl1":0,
+        "lvl2":0,
+        "lvl3":0,
+        "points":83
+    }]

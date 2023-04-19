@@ -22,6 +22,7 @@
             <button id="playButton" onclick="gameDifficulty()">Start the game</button>
             <button id="startAgain" onclick="reload()">Play Again</button>
             <button id="submit" onclick="updateScore()">Submit</button>
+            <button id="nextGame" onclick="restart()">Next Game</button>
         </div>
         <div id="board"></div>
         <div id="win"></div>
@@ -36,10 +37,29 @@
 
         var currentHighscore = 0;
         var userFound = 0;
+        var complexGameIndex = 0;
+        var levelPoints = [];
+        var lvl0 = 0;
+        var lvl1 = 0;
+        var lvl2 = 0;
 
         function reload() {
             location.reload();
-            console.log(state.gameStarted);
+        }
+
+        function restart() {
+            document.getElementById('nextGame').style.display = "none";
+            values.board.style.display = "inline-grid";
+            state.totalFlips = 0;
+            state.flippedCards = 0;
+            state.totalTime = 0;
+            state.loop = null;
+            state.currentPoints = 0;
+
+            for (var i = values.board.children.length - 1; i >= 0; i--) {
+                values.board.removeChild(values.board.children[i]);
+            }
+            complexGame();
         }
 
         const values = {
@@ -51,12 +71,11 @@
         }
 
         const state = {
-            gameStarted: false,
-            totalFlips: 0,
             flippedCards: 0,
-            totalTime: 0,
             loop: null,
-            currentPoints: 100
+            currentPoints: 0,
+            totalFlips: 0,
+            totalTime: 0
         }
 
         function getCookie(name) {
@@ -91,7 +110,7 @@
         }
 
         function gameDifficulty() {
-            document.getElementById('playButton').style.display = 'none';
+            values.play.style.display = 'none';
             var difficulty = getCookie("difficulty");
             switch (difficulty) {
                 case "simple":
@@ -114,13 +133,24 @@
         }
 
         function complexGame() {
-            initializeGame(5, true, 5, 9);
-            //initializeGame(5, true, 5, 9);
-            // 15 cartas de parejas de 3
-            //initializeGame(5, true, 10, 12);
-            // 20 cartas de parejas de 4
+            switch (complexGameIndex) {
+                case 0:
+                    initializeGame(5, true, 0, 6);
+                    break;
+                //Facil
+                case 1:
+                    lvl1 = state.currentPoints;
+                    initializeGame(5, true, 5, 9);
+                    break;
+                // 15 cartas de parejas de 3
+                case 2:
+                    lvl2 = state.currentPoints;
+                    initializeGame(5, true, 10, 12);
+                    break;
+            }
+
+
             // Enseñar intentos y puntos de cada nivel
-            // Cambiar board a dorado si se supera max level de fichero (leer JSON antes y comparar con max puntos)
         }
 
 
@@ -188,6 +218,7 @@
         }
 
         async function rotateImage(image, flipCounter) {
+            console.log(state.currentPoints);
             state.totalFlips++;
             state.currentPoints--;
             var nodes = image.childNodes;
@@ -205,8 +236,8 @@
             if (rotateCounter == flipCounter) {
                 if (eyesToCheck.every((val, i, eyesToCheck) => val === eyesToCheck[0])) {
                     console.log("Same Cards");
+                    state.currentPoints += 5;
                     state.flippedCards += (flipCounter / 3);
-                    state.currentPoints++;
                     nonClickeable(flipCounter);
 
                 } else {
@@ -253,67 +284,74 @@
             var flag = false;
             highscore();
             findUser();
-            state.gameStarted = true
             var tries = 0;
 
             if (complex == true) {
-                tries = 70;
+                tries = 80;
             } else {
                 tries = 30;
             }
 
             state.loop = setInterval(() => {
                 state.totalTime++
+                state.currentPoints--;
                 values.moves.innerText = `${state.totalFlips} moves`
                 values.timer.innerText = `time: ${state.totalTime} sec`
+                var background = document.getElementById('background');
 
-                if (state.currentPoints > currentHighscore && flag == false) {
-                    //! NOT WORKING
+                if (state.currentPoints > currentHighscore && flag == false && complex == true) {
                     flag = true;
-                    console.log("helo");
-                    document.getElementById('background').style.backgroundColor = 'golden';
+                    background.style.backgroundColor = 'goldenrod';
                     setTimeout(function () {
-                        document.getElementById('background').style.backgroundColor = 'grey';
+                        background.style.backgroundColor = 'grey';
                     }, 1000)
                 }
 
                 if (state.flippedCards == cards) {
-                    var points = 100 - state.totalFlips - state.totalTime + state.flippedCards;
-                    setEnding('Won!', points);
+                    setEnding('Won!', complex);
                 }
 
                 if (state.totalFlips == tries) {
-                    setEnding('Lost :(', 0);
+                    state.currentPoints = 0;
+                    setEnding('Lost :(', complex);
                 }
             }, 1000)
         }
 
-        async function setEnding(message, points) {
-            /*
+        async function setEnding(message, complex) {
+
             values.win.innerHTML = `
                             <span class="win-text">
                                 You ${message}<br />
-                                    with <span class="highlight">${points}</span> points
+                                    with <span class="highlight">${state.currentPoints}</span> points
                             </span> 
                             `
-            */
+
             clearInterval(state.loop);
-            /*
+
             setTimeout(function () {
                 values.win.innerHTML = '';
             }, 5000);
 
             const wait = await timeStop(5000);
-            */
+
             if (getCookie("username") != null) {
-                endingOptions();
+                endingOptions(complex);
             }
         }
 
-        function endingOptions() {
+        function endingOptions(complex) {
+            levelPoints.push(state.currentPoints);
+            console.log(levelPoints);
+            complexGameIndex++;
             document.getElementById('board').style.display = "none";
-            document.getElementById('submit').style.display = "inline-block";
-            document.getElementById('startAgain').style.display = "inline-block";
+            if (complexGameIndex === 3 || complex == false || state.currentPoints == 0) {
+                document.getElementById('submit').style.display = "inline-block";
+                document.getElementById('startAgain').style.display = "inline-block";
+            }
+            if (complex == true && state.currentPoints > 0 && complexGameIndex < 3) {
+                document.getElementById('nextGame').style.display = "inline-block";
+            }
         }
 
         //------------------------------------------------------------------------------
@@ -330,17 +368,32 @@
             }
         }
 
+        var sum = 0;
+
         function updateScore() {
+
+            if (levelPoints.length === 1) {
+                sum = state.currentPoints;
+                levelPoints[0] = 0;
+                levelPoints[1] = 0;
+                levelPoints[2] = 0;
+            } else {
+                sum = levelPoints[0] + levelPoints[1] + levelPoints[2];
+            }
+
             if (userFound != 1) {
                 console.log(userFound);
-                var postdata = `action=updatescores&points=${100 - state.totalFlips - state.totalTime + state.flippedCards}`;
+                var postdata = `action=updatescores&points=${sum}&lvl1=${levelPoints[0]}&lvl2=${levelPoints[1]}&lvl3=${levelPoints[2]}`;
                 httpRequest = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP");
                 httpRequest.open("POST", '../php/pairs.php', false);
                 httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 httpRequest.send(postdata);
+                levelPoints.length = 0;
             } else {
                 changeScore();
             }
+
+            reload();
         }
 
         var httpRequestUser;
@@ -348,7 +401,6 @@
             if (httpRequestUser.readyState == 4) {
                 if (httpRequestUser.status == 200) {
                     userFound = httpRequestUser.responseText;
-                    //console.log(userFound);
                 }
             }
         }
@@ -363,11 +415,12 @@
         }
 
         function changeScore() {
-            var postdata = `action=changeScore&points=${100 - state.totalFlips - state.totalTime + state.flippedCards}`;
+            var postdata = `action=changeScore&points=${sum}&lvl1=${levelPoints[0]}&lvl2=${levelPoints[1]}&lvl3=${levelPoints[2]}`;
             httpRequest = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP");
             httpRequest.open('POST', '../php/pairs.php', false);
             httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             httpRequest.send(postdata);
+            levelPoints.length = 0;
         }
 
         function leaderboardNames() {

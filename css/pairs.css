@@ -81,13 +81,17 @@
 
 }
 
-#playButton{
+#playButton, #nextGame{
   background: green;
   border: 1px solid green;
   display: flex;
   text-align: center;
   align-items: center;
   justify-content: center;
+}
+
+#nextGame{
+  display: none;
 }
 
 #startAgain{
