@@ -5,10 +5,9 @@ Final project for my web development module in Computer Science at Exeter
 
 ### JS Index
 
-The code contains two main functionalities:
+* getCookie function retrieves the value of a cookie by name. It uses document.cookie property to search for the cookie and returns its value if found, otherwise null.
 
-A function named getCookie that takes in a parameter name and retrieves the value of a cookie with the given name. It does this by accessing the document.cookie property, searching for the cookie with the given name, and returning its value if found. If not found, it returns null.
-A window.onload event that triggers a function named checkCookies when the webpage loads. This function checks for the existence of a cookie named "username" and uses its value to determine whether or not to display the registration form or the game. If the cookie is not found, the registration form and related elements are made visible and the game is hidden. Otherwise, the game and related elements are made visible and the registration form is hidden. Additionally, the function retrieves the values of three more cookies named "eyes", "mouth", and "skin", and uses them to set the sources of three images on the page to the corresponding images.
+* window.onload event triggers checkCookies function that checks if cookie "username" exists. It displays the registration form if not, otherwise, it displays the game. The function also retrieves values of three more cookies ("eyes", "mouth", and "skin") and sets the sources of three images on the page to the corresponding images.
 
 ------
 
@@ -32,23 +31,17 @@ A window.onload event that triggers a function named checkCookies when the webpa
 
 ### PHP Pairs
 
-Functionality 1: updatescores
-This functionality updates a user's score in the leaderboard by creating a JSON object with the user's username, levels completed, and points earned, and appending it to the end of the existing JSON leaderboard data. The updated leaderboard data is then written to a file.
+* Updates user score in the leaderboard by creating a JSON object with the user's username, levels completed, and points earned, and appending it to the existing JSON.
 
-Functionality 2: changeScore
-This functionality updates a user's score in the leaderboard by iterating through the existing JSON leaderboard data and finding the entry with the matching username. If the user's new score is higher than their existing score, their level completion data and score are updated, and the updated leaderboard data is written to a file.
+* Changes the score for a specific user in the leaderboard by iterating through the existing JSON leaderboard data and finding the entry with the matching username. If the user's new score is higher than their existing score, their scores are updated.
 
-Functionality 3: findUser
-This functionality checks if a given user's username exists in the JSON leaderboard data. If the username is found, it returns true; otherwise, it returns false.
+* Checks if a given user's username exists in the JSON leaderboard data
 
-Functionality 4: leaderboardNames
-This functionality retrieves a list of usernames from the JSON leaderboard data and returns them as an array.
+* Retrieves a list of usernames from the JSON leaderboard data and returns them as an array.
 
-Functionality 5: leaderboardScores
-This functionality retrieves a list of scores from the JSON leaderboard data and returns them as an array.
+* Retrieves a list of scores from the JSON leaderboard data and returns them as an array.
 
-Functionality 6: highscore
-This functionality retrieves the highest score from the JSON leaderboard data and returns it. If the leaderboard data is empty, it returns 0.
+* Retrieves the highest score from the JSON leaderboard data and returns it. If the leaderboard data is empty, it returns 0.
 
 ------
 
