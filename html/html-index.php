@@ -12,7 +12,6 @@
 
 <body>
     <?php include 'NavigationBar.php'; ?>
-    <?php include '../php/index.php'; ?>
     <h1>Welcome to pairs</h1>
     <br>
 

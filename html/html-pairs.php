@@ -137,23 +137,16 @@
                 case 0:
                     initializeGame(5, true, 0, 6);
                     break;
-                //Facil
                 case 1:
                     lvl1 = state.currentPoints;
                     initializeGame(5, true, 5, 9);
                     break;
-                // 15 cartas de parejas de 3
                 case 2:
                     lvl2 = state.currentPoints;
                     initializeGame(5, true, 10, 12);
                     break;
             }
-
-
-            // Enseñar intentos y puntos de cada nivel
         }
-
-
 
         var rotateCounter = 0;
         var visibleNodes = [];
